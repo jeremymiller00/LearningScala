@@ -1,0 +1,6 @@
+Why learn scala?
+
+Functional programming style allows type safety and immutability of environment
+Simpler and more expressive
+Will develop my engineering skills
+
