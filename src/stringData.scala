@@ -24,4 +24,13 @@ println("Printf notation is also very useful.")
 val item = "apple"
 f"I wrote a new $item%.3s today"
 f"Enjoying this $item ${355/113.0}%.5f times today"
+println()
+println("A string is just a collection of characters.")
+println("To indicate a single character use single quotes: val c = \'a\'")
+val c = 'a'
+println()
+println("Int version of char is its ascii number")
+val i: Int = c
+val t: Char = 116
+
 
