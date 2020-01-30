@@ -61,16 +61,30 @@ val sq = square _
 /*
  *
  */
-def conditional[A](x: A)(p: A => Boolean)(f: A => A): A = {
-    if ( p(x) == true) f(x) else x
+def conditional[A](x: A, p: A => Boolean, f: A => String): String = {
+    if (p(x)) f(x) else ""
 }
 
 def isEven(q: Int) = { q % 2 == 0 }
 def quintuple(w: Int) = { w * 5 }
 
-conditional[Int](4)(isEven)(quintuple)
-conditional[Int](3)(isEven)(quintuple)
+// conditional[Int](4)(isEven)(quintuple)
+// conditional[Int](3)(isEven)(quintuple)
+
+def multipleOf3(x: Int) = { x % 3 == 0}
+def multipleOf5(x: Int) = { x % 5 == 0}
+def multipleOf15(x: Int) = { multipleOf3(x) && multipleOf5(x) }
+
+def typeSafely(i: Int): String = {
+    val a1 = conditional[Int](i, _ % 3 == 0, _ => "type")
+    val a2 = conditional[Int](i, _ % 5 == 0, _ => "safe")
+    val a3 = conditional[Int](i, _ % 3 > 0 && i % 5 > 0, x => s"$x")
+    a1 + a2 + a3
+}
 
 
+val sequence = 1 to 100 map typeSafely
+
+println(sequence.mkString("\n"))
 
 
