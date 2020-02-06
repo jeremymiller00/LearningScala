@@ -54,13 +54,20 @@ def longestString(a: List[String]): String = {
   // a.reduce( {
   //   (a: String, b: String) =>
   //   if (a.size > b.size) a else b } )
-  a.fold(Nil)({
+  a.fold("")({
     (a: String, b: String) =>
     if (a.size > b.size) a else b })
   }
-
-
-
-}
-
 longestString(List("The", "biggest", "word"))
+
+/**
+ * Return longest item in list
+ */
+def longestItem[A](a: List[A]): A = {
+  a.reduce( {
+    (a, b) =>
+    if (a.toString.size > b.toString.size) a else b } )
+  }
+
+longestItem[String](List("The", "biggest", "word"))
+longestItem[List[Int]](List(List(1,2), List(1,2,3,4), List(1,2,3) ))
