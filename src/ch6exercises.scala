@@ -87,7 +87,7 @@ reverser(List(1,2,3,4))
  * Output: Tuple of lists -> List of strings of palindromes; List of remaining strings
  */
 def stringSplitter(l: List[String]): Tuple2[List[String], List[String]] = {
-  l.partition(_.size == 3)
+  l.partition(s => s == s.reverse)
 }
 
 stringSplitter(List("cat", "tat", "dad", "data"))
