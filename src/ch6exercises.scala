@@ -71,3 +71,23 @@ def longestItem[A](a: List[A]): A = {
 
 longestItem[String](List("The", "biggest", "word"))
 longestItem[List[Int]](List(List(1,2), List(1,2,3,4), List(1,2,3) ))
+
+
+/**
+ * Reverse a list
+ */
+def reverser[A](source: List[A], dest: List[A] = Nil): List[A] = {
+  if (source == Nil) dest else reverser(source.tail, source.head::dest)
+}
+
+reverser(List(1,2,3,4))
+
+/**
+ * Input: a list of strings
+ * Output: Tuple of lists -> List of strings of palindromes; List of remaining strings
+ */
+def stringSplitter(l: List[String]): Tuple2[List[String], List[String]] = {
+  l.partition(_.size == 3)
+}
+
+stringSplitter(List("cat", "tat", "dad", "data"))
