@@ -55,7 +55,31 @@ println("Only use arrays when needed for compatibility with JVM code.")
 println("Seq is the root of all sequences.")
 println("Indexed sequences: Vector, Range")
 println("Linear Sequences: Queue/Stack, List, Stream")
+println("Vector is a list backed with an array for indexed access")
+println("Scala Vector is analogous to Java ArrayList.")
+println("Higher level types are rarely useful in themselves.")
+println("String is also an immutable collection.")
+val hi = "hello" ++ "worldly" take 12 replaceAll ("w", "W")
 
+println("Stream is a LAZY collection, with its own special properties.")
+println("Elements are added only when they are accessed for the first time.")
+println("Streams can be unbounded, theoretically infinite collections where elements are only realized upon access.")
+println("Streams can be terminated with Stream.empty")
+def inc(i: Int): Stream[Int] = Stream.cons(i, inc(i + 1))
+val s = inc(1)
+val l = s.take(5).toList
+println(" #:: is a cryptic way of invoking the cons operator of a Stream.")
+def inc(head: Int): Stream[Int] = head #:: inc(head+1)
+val s = inc(10).take(10).toList
+println("A bounded stream:")
+/**
+ *  Generates a stream of characters with specified bounds
+ */
+def to(head: Char, end: Char): Stream[Char] = (head > end) match {
+    case true => Stream.empty
+    case false => head #:: to((head+1).toChar, end)
+}
 
+val someChars = to('A', 'F').take(20).toList
 
 
