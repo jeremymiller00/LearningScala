@@ -1,7 +1,6 @@
 // Chapter 7
 import collection.mutable._
 
-
 println("Root type 'iterable' has immutable subtypes List, Set, and Map.")
 println("Mutable collections:")
 println("Mutable Map:")
@@ -75,11 +74,51 @@ println("A bounded stream:")
 /**
  *  Generates a stream of characters with specified bounds
  */
-def to(head: Char, end: Char): Stream[Char] = (head > end) match {
+def to(start: Char, end: Char): Stream[Char] = (start > end) match {
     case true => Stream.empty
-    case false => head #:: to((head+1).toChar, end)
+    case false => start #:: to((start+1).toChar, end)
 }
 
 val someChars = to('A', 'F').take(20).toList
 
+println("Monadic Collections: Collection with One element!")
+println("Collection 'Option' extends iterable.")
+println("Represents presence or absence of a single value")
+println("A way of wrapping and advertising a potentially missing or incalculable value.")
+println("Option relies on two subtypes for actual implementation: Some and None")
+
+var x: String = "Indeed"
+var a = Option(x)
+x = null
+var b = Option(x)
+
+println(s"a is defined? ${a.isDefined}")
+println(s"a is not defined? ${a.isEmpty}")
+println(s"b is defined? ${b.isDefined}")
+println(s"b is not defined? ${b.isEmpty}")
+
+println("A realistic example: prevent division by 0")
+def divide(amt: Double, divisor: Double): Option[Double] = {
+    if (divisor == 0) None
+    else Option(amt / divisor)
+}
+val legit = divide(5,2)
+val illegit  = divide(3,0)
+
+println("headOption is the head method wrapped in option")
+val odds = List(1,3,5)
+val firstOdd = odds.headOption
+val evens = odds filter (_ % 2 == 0)
+val firstEven = evens.headOption
+val breaks = evens.head
+
+println("Getting values out of Option: do NOT use .get()!")
+println("Use fold or getOrElse")
+println("The whole point of Option is to deal with missing values, and .get() fails with that")
+def nextOption = if (util.Random.nextInt > 0) Some(1) else None
+println("Some safe extractions:")
+nextOption.fold(-1)(x => x)
+nextOption getOrElse 5
+nextOption getOrElse { println("error!"); -1 }
+nextOption match { case Some(x) => x; case none => -1}
 
