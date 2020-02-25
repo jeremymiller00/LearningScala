@@ -122,3 +122,53 @@ nextOption getOrElse 5
 nextOption getOrElse { println("error!"); -1 }
 nextOption match { case Some(x) => x; case none => -1}
 
+println("Monadic Collection: Try")
+println("Turns error handling into collection management")
+println("Scala raises errors by throwing Exceptions")
+println("Unhandled exceptions will terminate application")
+throw new Exception("Bad message here!")
+
+def loopAndFail(end: Int, failAt: Int): Int = {
+    for (i <- 1 to end) {
+        println(s"$i")
+        if (i == failAt) throw new Exception("Bad bad bad....")
+    }
+    end
+}
+
+loopAndFail(10,3)
+println("Catch the exception with a Try collection")
+val t1 = util.Try( loopAndFail(2,3))
+val t2 = util.Try( loopAndFail(5,3))
+println("Invoking with expression block")
+val t3 = util.Try( loopAndFail( {val r = 5; r + 2 }, {val p = 2; p + 2} ) )
+
+def nextError = util.Try{ 1 / util.Random.nextInt(2) }
+val x = nextError
+val y = nextError
+val z = nextError
+
+println("Common error handling techniques - p.124")
+nextError flatMap {_ => nextError}
+nextError foreach( x => println("success!" + x))
+nextError getOrElse 0
+nextError orElse nextError
+nextError.toOption
+nextError map (_ * 2)
+nextError match {
+    case util.Success(x) => x;
+    case util.Failure(error) => -1
+}
+nextError // do nothing!
+println("A common use case is validating numbers stored in strings")
+val input = " 123 "
+val result = util.Try(input.toInt) orElse util.Try(input.trim.toInt)
+result foreach { r => println(s"Parsed '$input' to $r!")}
+val x = result match {
+    case util.Success(x) => Some(x)
+    case util.Failure(ex) => {
+        println(s"Couldn't parse input '$input'")
+        None
+    }
+}
+println("The only wrong way is to simply ignore exceptions!")
