@@ -1,5 +1,7 @@
 // Chapter 7
 import collection.mutable._
+import concurrent.ExecutionContext.Implicits.global
+import concurrent.Future
 
 println("Root type 'iterable' has immutable subtypes List, Set, and Map.")
 println("Mutable collections:")
@@ -172,3 +174,41 @@ val x = result match {
     }
 }
 println("The only wrong way is to simply ignore exceptions!")
+
+println("Future Collections!!!!! Initiates a background task.")
+println("concurrent.Future")
+println("Unlike Option or Try, a future's value may not be available on initialization")
+println("A Future is a monitor of a Java background thread, awaiting a result")
+println("You must first specify the context!")
+val f = concurrent.Future { println("Hi!")}
+f
+val f = concurrent.Future {Thread.sleep(5000); println("Hello!")}
+f
+println("Specify a callback function to recieve the eventual result of a Future")
+
+def nextFtr(i: Int = 0) = Future {
+  def rand(x: Int) = util.Random.nextInt(x)
+
+  Thread.sleep(rand(500))
+  if (rand(3) > 0 ) (i + 1) else throw new Exception
+}
+
+nextFtr(1) fallbackTo nextFtr(2)
+nextFtr(1) flatMap nextFtr(2)
+nextFtr(1) map (_ * 2)
+nextFtr(1) onComplete { _ getOrElse 0 }
+nextFtr(1) onFailure { case _ => "Error!" }
+nextFtr(1) onSuccess { case x => s"Got $x!" }
+concurrent.Future sequence List(nextFtr(1), nextFtr(5))
+
+import concurrent.duration._
+val maxTime = Duration(10, SECONDS)
+val amount = concurrent.Await.result( nextFtr(5), maxTime)
+
+
+
+
+
+
+
+
