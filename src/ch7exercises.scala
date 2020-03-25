@@ -13,24 +13,30 @@ def fibonacci(n: Int): List[Int] = {
     return output.toList
     }
 
-/**
- * A function that returns the first N elements of Fibonacci series
- * Use Match statements
- */
-// def fibonacci(n: Int): List[Int] = {
-//     val output = n match {
-//     case n if n < 1 => List(0)
-//     case other => {
-//         collection.mutable.Buffer(1)
-//         for ( i <- 1 to n ) { output += { output.takeRight(2).sum } }
-//     return output.toList
-//         }
-//     }}
-
 fibonacci(0)
 fibonacci(4)
 fibonacci(10)
 fibonacci(20)
+
+/**
+ * A function that returns the first N elements of Fibonacci series
+ * Using Match statements
+ */
+// def fibonacciMatch(n: Int): List[Int] = {
+//     val output = n match {
+//         case n if n < 1 => List(0)
+//         case other => {
+//             val output = collection.mutable.Buffer(1)
+//             for ( i <- 1 to n ) { output += { output.takeRight(2).sum } } }
+//             return output.toList
+//         }}
+
+
+// fibonacciMatch(0)
+// fibonacciMatch(4)
+// fibonacciMatch(10)
+// fibonacciMatch(20)
+
 
 /**
  * Input: a list numbers
@@ -45,23 +51,43 @@ def fibonacciExtender(start: List[Int], n: Int): List[Int] = {
 
 val seed1 = List(1,1,2,3,5,8)
 val seed2 = List(1)
-val seed3 = List()
+val seed3 = List(1, 1)
 fibonacciExtender(seed1, 4)
 fibonacciExtender(seed2, 8)
 fibonacciExtender(seed3, 5)
 
 /**
- * Fibonacci using Stream
+ * Tail-recursive Fibonacci Extender
  */
-def fibonacciStream(n: Int): Stream[Int] = (n > 0) match {
-    case true => Stream.empty
-    case false => {
-        Stream.cons(1, 1 + n)
+@annotation.tailrec
+def tailRecursiveFibonacciExtender(start: List[Int], count: Int): List[Int] = {
+    if (count < 1) start
+    else {
+        val k = start :+ start.takeRight(2).sum
+        tailRecursiveFibonacciExtender(k, count - 1)
     }
 }
+tailRecursiveFibonacciExtender(seed1, 4)
+tailRecursiveFibonacciExtender(seed2, 8)
+tailRecursiveFibonacciExtender(seed3, 5)
 
+/**
+ * Fibonacci using Stream
+ */
+// def fib(a: Int, b: Int): Stream[Int] = a #:: fib(b, a + b)
+def fib(a: Long, b: Long): Stream[Long] = Stream.cons(a, fib(b, a + b))
+fib(1,1).take(100).toList
+// 4 byte integers are insufficient
 
-def to(start: Char, end: Char): Stream[Char] = (start > end) match {
-    case true => Stream.empty
-    case false => start #:: to((start+1).toChar, end)
+/**
+ * Takes a fibonacci element and returns the next 
+ * Need to generate values up to input element
+ */
+def nextFib(a: Long): Option[Long] = {
+    val start = fib(1, 1)
+    val preceeding = start.takeWhile(_ <= a).toList
+    if (preceeding.last == a) Some(preceeding.takeRight(2).sum)
+    else None
 }
+val x = nextFib(21)
+val x = nextFib(22)
