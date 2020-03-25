@@ -1,6 +1,6 @@
 println("Collection")
 println("Scala has java collection plus higher order:\n\tmap\n\treduce\n\tfilter")
-println("There are mutable and immutable collectons")
+println("There are mutable and immutable collections")
 
 println("List")
 val nums = List(1,2,3,4)

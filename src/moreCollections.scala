@@ -184,7 +184,7 @@ val f = concurrent.Future { println("Hi!")}
 f
 val f = concurrent.Future {Thread.sleep(5000); println("Hello!")}
 f
-println("Specify a callback function to recieve the eventual result of a Future")
+println("Specify a callback function to receive the eventual result of a Future")
 
 def nextFtr(i: Int = 0) = Future {
   def rand(x: Int) = util.Random.nextInt(x)
